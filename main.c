@@ -2,11 +2,11 @@
 #include <stdlib.h>
 int main(){
     float calificacion1,calificacion2,calificacion3,res,calificacion;
-    printf("calificacion1.- ");
+    printf("calificacion11.- ");
     scanf ("%d", &calificacion1);
-    printf("calificacion2.- ");
+    printf("calificacion22.- ");
     scanf ("%d", &calificacion2);
-    printf("calificacion3.- ");
+    printf("calificacion33.- ");
     scanf ("%d", &calificacion3);
     res=(calificacion1+calificacion2+calificacion3);
     printf("calificacion=%f",res);
