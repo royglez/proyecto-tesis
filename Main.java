@@ -10,8 +10,6 @@ import javafx.fxml.FXMLLoader;
 
 public class Main extends Application {
 	
-	public static Boolean exit = false;
-	
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME); //Load the OpenCV Library
 	}
@@ -24,7 +22,7 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			stage.setTitle("Image Viewer");
 			stage.setScene(scene);
-			stage.show();
+			stage.show();			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -32,15 +30,6 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 		Application.launch(Main.class, args);
-	
-		Runtime.getRuntime().addShutdownHook(new Thread()
-	    {
-	        @Override
-	        public void run()
-	        {
-	            exit = true;
-	        }
-	    });
 	}
 	
 }
