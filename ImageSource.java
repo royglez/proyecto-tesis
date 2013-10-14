@@ -11,13 +11,33 @@ import java.awt.image.BufferedImage;
 /**
  * @author Rodrigo González
  *
+ * Singleton Class
+ *
  */
+
 public final class ImageSource {
-	private final VideoCapture camera = new VideoCapture();
 	
-	//Constructor
-	public ImageSource(){
-		camera.open(-1);
+	private static ImageSource instance = null;
+	private final static VideoCapture camera = new VideoCapture();
+	
+	private ImageSource(){}
+	
+	/**
+	 * Double Checked Locking
+	 * If a threat wants to access at the same time another threat is using this method
+	 * the second threat will have to wait until the first one finishes using it.
+	 * @return
+	 */
+	public static ImageSource getInstance() {
+		if(instance == null) {
+			synchronized (ImageSource.class){
+				if(instance == null) {
+					camera.open(-1);
+					instance = new ImageSource();
+				}
+			}
+		}
+		return instance;
 	}
 	
 	public void destroyCamera(){
