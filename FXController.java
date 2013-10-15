@@ -44,6 +44,10 @@ public class FXController extends Application {
 		imagePanel.imageProperty().bind(imageProperty);
 		this.cameraImages.start();
 	}
+	
+	@FXML protected void handleCalibrateImageBtn(ActionEvent event) {
+		System.out.println("Calibrate Image");
+	}
 
 	@Override
 	public void start(Stage arg0) throws Exception {
