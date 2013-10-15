@@ -52,4 +52,8 @@ public class ObjectsFinder {
 		}
 		return null;
 	}
+	
+	public void calibrate(){
+		
+	}
 }
