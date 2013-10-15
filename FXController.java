@@ -1,8 +1,10 @@
 package application;
 
-import java.awt.image.BufferedImage;
+
+import org.opencv.core.Mat;
 
 import facefinder.ImageSource;
+import facefinder.ObjectsFinder;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
@@ -16,15 +18,21 @@ import javafx.stage.Stage;
 public class FXController extends Application {
 	
 	SimpleObjectProperty<Image> imageProperty = new SimpleObjectProperty<Image>();
+	ObjectsFinder faceFinder = new ObjectsFinder(System.getProperty("user.dir") + "/resources/haarcascade_frontalface_alt.xml");
 	
 	@FXML private ImageView imagePanel;
 	
 	private AnimationTimer cameraImages  = new AnimationTimer() {
 		@Override
 		public void handle(long arg0) {
-			BufferedImage img = ImageSource.getInstance().getImage();
-			Image image = SwingFXUtils.toFXImage(img, null); //Convert from BufferedImage to FX Image
-			setImage(image);
+			Mat img = ImageSource.getInstance().getImage();
+			if(img != null) {
+				img = faceFinder.findObject(img);
+				Image image = SwingFXUtils.toFXImage(ImageSource.matToBufferedImage(img), null); //Convert from BufferedImage to FX Image
+				if(image != null){
+					setImage(image);
+				}
+			}
 		}
 	};
 	
