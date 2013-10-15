@@ -19,7 +19,17 @@ public final class ImageSource {
 	
 	private static ImageSource instance = null;
 	private final static VideoCapture camera = new VideoCapture();
+	private Mat image = new Mat();
 	
+	public Mat getImage() {
+		camera.read(image);
+		if(!image.empty()){
+			return this.image;
+		}else{
+			return null;
+		}
+	}
+
 	private ImageSource(){}
 	
 	/**
@@ -44,16 +54,8 @@ public final class ImageSource {
 		camera.release();
 	}
 	
-	//Read an image form the camera and return it as a BufferedImage
-	public BufferedImage getImage(){
-		Mat image = new Mat();
-		
-		camera.read(image);
-		return matToBufferedImage(image);
-	}
-	
 	//Convert from Mat to BufferedImage
-    private static BufferedImage matToBufferedImage (final Mat matrix) {
+    public static BufferedImage matToBufferedImage (final Mat matrix) {
         int cols = matrix.cols();
         int rows = matrix.rows();
         int elemSize = (int)matrix.elemSize();
