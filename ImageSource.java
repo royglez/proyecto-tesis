@@ -21,6 +21,8 @@ public final class ImageSource {
 	private final static VideoCapture camera = new VideoCapture();
 	private Mat image = new Mat();
 	
+	private ImageSource(){}
+	
 	public Mat getImage() {
 		camera.read(image);
 		if(!image.empty()){
@@ -29,8 +31,6 @@ public final class ImageSource {
 			return null;
 		}
 	}
-
-	private ImageSource(){}
 	
 	/**
 	 * Double Checked Locking
@@ -55,7 +55,7 @@ public final class ImageSource {
 	}
 	
 	//Convert from Mat to BufferedImage
-    public static BufferedImage matToBufferedImage (final Mat matrix) {
+    public static synchronized BufferedImage matToBufferedImage (final Mat matrix) {
         int cols = matrix.cols();
         int rows = matrix.rows();
         int elemSize = (int)matrix.elemSize();
