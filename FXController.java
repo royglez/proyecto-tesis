@@ -19,6 +19,7 @@ public class FXController extends Application {
 	
 	SimpleObjectProperty<Image> imageProperty = new SimpleObjectProperty<Image>();
 	ObjectsFinder faceFinder = new ObjectsFinder(System.getProperty("user.dir") + "/resources/haarcascade_frontalface_alt.xml");
+	ObjectsFinder eyeFinder = new ObjectsFinder(System.getProperty("user.dir") + "/resources/haarcascade_mcs_righteye.xml");
 	
 	@FXML private ImageView imagePanel;
 	
@@ -27,9 +28,10 @@ public class FXController extends Application {
 		public void handle(long arg0) {
 			Mat img = ImageSource.getInstance().getImage();
 			if(img != null) {
-				img = faceFinder.findObject(img);
-				Image image = SwingFXUtils.toFXImage(ImageSource.matToBufferedImage(img), null); //Convert from BufferedImage to FX Image
-				if(image != null){
+				faceFinder.findObject(img);
+				if(faceFinder.getDetectedObject()){
+					eyeFinder.findObject(faceFinder.getROI());
+					Image image = SwingFXUtils.toFXImage(ImageSource.matToBufferedImage(eyeFinder.getROI()), null); //Convert from BufferedImage to FX Image
 					setImage(image);
 				}
 			}
