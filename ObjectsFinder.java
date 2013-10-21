@@ -31,6 +31,22 @@ public class ObjectsFinder {
 	}
 	
 	/**
+	 * Returns true if it was possible to detect an object in the last iteration.
+	 * 
+	 * @property detectedObject
+	 * @type Boolean
+	 */
+	private boolean detectedObject = false;
+	
+	/**
+	 * Region of Interest. An extraction of the image where the last object was located.
+	 * 
+	 * @property roi
+	 * @type Mat Object
+	 */
+	private Mat roi = new Mat();
+	
+	/**
 	 * Cascade classifier object.
 	 * 
 	 * @property cascadeClassificator
@@ -45,6 +61,24 @@ public class ObjectsFinder {
 	 * @type MatOfRect Object
 	 */
 	private MatOfRect objectsDetected = new MatOfRect();
+	
+	/**
+	 * Method that returns the region of interest where the last object was found.
+	 * 
+	 * @return {Object} Mat image.
+	 */
+	public Mat getROI(){
+		return this.roi;
+	}
+	
+	/**
+	 * Returns a boolean value that indicates if it was possible to identify an object in the last iteration.
+	 * 
+	 * @return {Boolean}.
+	 */
+	public boolean getDetectedObject(){
+		return this.detectedObject;
+	}
 	
 	/**
 	 * Sets or changes the cascade classifier file.
@@ -77,18 +111,22 @@ public class ObjectsFinder {
 			cascadeClassificator.detectMultiScale(image, objectsDetected, 1.7, 2, 1, minImgSize, image.size());
 			
 			if(objectsDetected.toArray().length > 0){
-				for(Rect rect : objectsDetected.toArray()) {
-					Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
-				}
+				int X = objectsDetected.toArray()[0].x;
+				int Y = objectsDetected.toArray()[0].y;
+				int Width = objectsDetected.toArray()[0].width;
+				int Height = objectsDetected.toArray()[0].height;
+				
+				roi = new Mat(image,new Rect(X,Y,Width,Height));
+				Core.rectangle(image, new Point(X, Y), new Point(X + Width,Y + Height), new Scalar(0, 255, 0));
+				this.detectedObject = true;
+			}else{
+				roi = image;
+				this.detectedObject = false;
 			}
 			return image;
 		}else{
 			System.out.println("The cascade file must not be empty. Please Verify.");
 		}
 		return null;
-	}
-	
-	public void calibrate(){
-		
 	}
 }
