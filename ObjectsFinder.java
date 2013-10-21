@@ -1,3 +1,7 @@
+/**
+ * @author Rodrigo Gonzalez
+ */
+
 package facefinder;
 
 import org.opencv.core.Core;
@@ -10,10 +14,14 @@ import org.opencv.core.Size;
 import org.opencv.objdetect.CascadeClassifier;
 
 public class ObjectsFinder {
-	
-	private CascadeClassifier cascadeClassificator =  null;
-	private MatOfRect objectsDetected = new MatOfRect();
-
+	/**
+	 * This class finds an specific object in a given image.
+	 * The class must be feed with a cascade classifier (XML) file.
+	 *  
+	 * @class ObjectsFinder
+	 * @param {String} Cascade classifier file location.
+	 * @constructor
+	 */
 	public ObjectsFinder(String cascade){
 		if(cascade != null && !cascade.isEmpty()){
 			cascadeClassificator = new CascadeClassifier(cascade);
@@ -22,6 +30,27 @@ public class ObjectsFinder {
 		}
 	}
 	
+	/**
+	 * Cascade classifier object.
+	 * 
+	 * @property cascadeClassificator
+	 * @type CascadeClassifier Object
+	 */
+	private CascadeClassifier cascadeClassificator =  null;
+	
+	/**
+	 * Array containing the detected objects.
+	 * 
+	 * @property objectsDetected
+	 * @type MatOfRect Object
+	 */
+	private MatOfRect objectsDetected = new MatOfRect();
+	
+	/**
+	 * Sets or changes the cascade classifier file.
+	 * 
+	 * @param {String} Cascade classifier file location.
+	 */
 	public void setCascadeClassifier(String cascade){
 		if(!cascade.isEmpty() && cascade != null){
 			if(cascadeClassificator != null){
@@ -34,6 +63,12 @@ public class ObjectsFinder {
 		}
 	}
 	
+	/**
+	 * Method that finds all the objects in an image, based on the cascade classifier file.
+	 * 
+	 * @param {Object} Expects a Mat image.
+	 * @return {Object} Returns an image with the located objects marked with a square.
+	 */
 	public Mat findObject(Mat image) {
 		if(!cascadeClassificator.empty() && cascadeClassificator != null){
 			Size minImgSize = image.size();
