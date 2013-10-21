@@ -1,6 +1,7 @@
 /**
- * 
+ * @author Rodrigo Gonzalez
  */
+
 package facefinder;
 
 import org.opencv.core.Mat;
@@ -8,21 +9,49 @@ import org.opencv.highgui.VideoCapture;
 
 import java.awt.image.BufferedImage;
 
-/**
- * @author Rodrigo González
- *
- * Singleton Class
- *
- */
 
 public final class ImageSource {
-	
-	private static ImageSource instance = null;
-	private final static VideoCapture camera = new VideoCapture();
-	private Mat image = new Mat();
-	
+	/**
+	 * Singleton class that provides the images from the camera.
+	 * 
+	 * @class ImageSource
+	 * @static
+	 */
 	private ImageSource(){}
 	
+	/**
+	 * Singleton instance for the class.
+	 * 
+	 * @property instance
+	 * @type ImageSource Object
+	 * @static
+	 */
+	private static ImageSource instance = null;
+	
+	/**
+	 * Video camera object.
+	 * 
+	 * @property camera
+	 * @type VideoCapture Object
+	 * @final
+	 * @static
+	 */
+	private final static VideoCapture camera = new VideoCapture();
+	
+	/**
+	 * Image obtained from the camera.
+	 * 
+	 * @property image
+	 * @type Mat Object
+	 */
+	private Mat image = new Mat();
+	
+	/**
+	 * Retrieves an image taken by the camera.
+	 * 
+	 * @method getImage
+	 * @return {Object} Returns an image in Mat (OpenCV image) format if possible, otherwise returns null.
+	 */
 	public Mat getImage() {
 		camera.read(image);
 		if(!image.empty()){
@@ -31,12 +60,14 @@ public final class ImageSource {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * Double Checked Locking
-	 * If a threat wants to access at the same time another threat is using this method
+	 * Retrieves the objects instance of the singleton class.
+	 * NOTE: If a threat wants to access at the same time another threat is using this method
 	 * the second threat will have to wait until the first one finishes using it.
-	 * @return
+	 * 
+	 * @method getInstance
+	 * @return {Object} Returns the ImageSource class instance.
 	 */
 	public static ImageSource getInstance() {
 		if(instance == null) {
@@ -54,7 +85,13 @@ public final class ImageSource {
 		camera.release();
 	}
 	
-	//Convert from Mat to BufferedImage
+	/**
+	 * Convert from Mat to BufferedImage format.
+	 * 
+	 * @mathod matToBufferedImage
+	 * @param {Object} Expects a Mat image
+	 * @return {Object} Returns a BufferedImage format image
+	 */
     public static synchronized BufferedImage matToBufferedImage (final Mat matrix) {
         int cols = matrix.cols();
         int rows = matrix.rows();
