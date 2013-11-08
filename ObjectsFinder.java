@@ -30,6 +30,52 @@ public class ObjectsFinder {
 		}
 	}
 	
+	private double scaleFactor = 1.7;
+	private int minNeighbors = 2;
+	private int flags = 1;
+	private double minSizeFactor = 20;
+	private double maxSizeFactor = 1;
+	
+	public double getScaleFactor() {
+		return scaleFactor;
+	}
+
+	public void setScaleFactor(double scaleFactor) {
+		this.scaleFactor = scaleFactor;
+	}
+
+	public int getMinNeighbors() {
+		return minNeighbors;
+	}
+
+	public void setMinNeighbors(int minNeighbors) {
+		this.minNeighbors = minNeighbors;
+	}
+
+	public int getFlags() {
+		return flags;
+	}
+
+	public void setFlags(int flags) {
+		this.flags = flags;
+	}
+
+	public double getMinSizeFactor() {
+		return minSizeFactor;
+	}
+
+	public void setMinSizeFactor(double minSizeFactor) {
+		this.minSizeFactor = minSizeFactor;
+	}
+
+	public double getMaxSizeFactor() {
+		return maxSizeFactor;
+	}
+
+	public void setMaxSizeFactor(double maxSizeFactor) {
+		this.maxSizeFactor = maxSizeFactor;
+	}
+	
 	/**
 	 * Returns true if it was possible to detect an object in the last iteration.
 	 * 
@@ -106,9 +152,12 @@ public class ObjectsFinder {
 	public Mat findObject(Mat image) {
 		if(!cascadeClassificator.empty() && cascadeClassificator != null){
 			Size minImgSize = image.size();
-			minImgSize.width /= 20;
-			minImgSize.height /= 20;
-			cascadeClassificator.detectMultiScale(image, objectsDetected, 1.7, 2, 1, minImgSize, image.size());
+			Size maxImgSize = image.size();
+			minImgSize.width /= this.minSizeFactor;
+			minImgSize.height /= this.minSizeFactor;
+			maxImgSize.width /= this.maxSizeFactor;
+			maxImgSize.height /= this.maxSizeFactor;
+			cascadeClassificator.detectMultiScale(image, objectsDetected, this.scaleFactor, this.minNeighbors, this.flags, minImgSize, maxImgSize);
 			
 			if(objectsDetected.toArray().length > 0){
 				int X = objectsDetected.toArray()[0].x;
