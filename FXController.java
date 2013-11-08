@@ -22,7 +22,7 @@ public class FXController extends Application {
 	
 	SimpleObjectProperty<Image> imageProperty = new SimpleObjectProperty<Image>();
 	ObjectsFinder faceFinder = new ObjectsFinder(System.getProperty("user.dir") + "/resources/haarcascade_frontalface_alt.xml");
-	ObjectsFinder eyeFinder = new ObjectsFinder(System.getProperty("user.dir") + "/resources/haarcascade_righteye_2splits.xml");
+	ObjectsFinder eyeFinder = new ObjectsFinder(System.getProperty("user.dir") + "/resources/haarcascade_lefteye_2splits.xml");
 	
 	@FXML private ImageView imagePanel;
 	@FXML private Label leftEyeLbl;
@@ -72,6 +72,16 @@ public class FXController extends Application {
 	
 	@FXML protected void handleShowImageBtn(ActionEvent event) {
 		imagePanel.imageProperty().bind(imageProperty);
+		this.faceFinder.setScaleFactor(1.9);
+		this.faceFinder.setMinNeighbors(3);
+		this.faceFinder.setMinSizeFactor(30);
+		this.faceFinder.setMaxSizeFactor(1.8);
+		
+		this.eyeFinder.setScaleFactor(3);
+		this.eyeFinder.setMinNeighbors(2);
+		this.eyeFinder.setMinSizeFactor(80);
+		this.eyeFinder.setMaxSizeFactor(2);
+		
 		this.cameraImages.start();
 	}
 	
